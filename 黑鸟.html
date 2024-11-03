@@ -1,0 +1,417 @@
+<!DOCTYPE HTML>
+<html class="no-js">
+	<head>
+		<title>M3U列表格式转换 - wuzhij</title>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="robots" content="index,follow">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<meta name="format-detection" content="telphone=no, email=no">
+		<meta name="description" content="" />
+		<meta name="keywords" content="M3U列表格式转换" />
+		<meta name="description" itemprop="description" content="" />
+                		<meta name='robots' content='max-image-preview:large' />
+
+
+
+
+<link rel='stylesheet' id='bootstrap-css' href='./viedojs/css/bootstrap.min.css?ver=3.3.7' type='text/css' media='all' />
+
+
+<link rel='stylesheet' id='kratos-css' href='./viedojs/css/style.css?ver=2.6' type='text/css' media='all' />
+
+
+
+<style></style><style id="cooment">
+        .comment-list{
+            counter-reset:comment-floor -32
+        }
+        .comment-list > .comment{
+            position:relative;
+        }
+        .comment-list > .comment:before{
+            content:counter(comment-floor, decimal);
+            counter-increment:comment-floor;
+            font-size: 32px;
+            position:absolute;
+            top:8px;
+            right:32px;
+            color:rgba(0,0,0,0.05);
+            font-style: italic;
+            font-weight: 700;
+        }</style>
+		<script type="text/javascript" src="./viedojs/js/jquery.min.js?ver=2.2.4" id="jquery-js"></script>
+
+	</head>
+		<body data-spy="scroll" data-target=".scrollspy">
+		<div id="kratos-wrapper">
+			<div id="kratos-page">
+				<!--div id="kratos-header">
+					<header id="kratos-header-section">
+						<div class="container">
+							<div class="nav-header">
+							<a href="#" class="js-kratos-nav-toggle kratos-nav-toggle"><i></i></a>		
+							<h1 id="kratos-logo"><a href="http://sankei.mo">Angus Search</a></h1>
+			<nav id="kratos-menu-wrap" class="menu-%e9%a1%b6%e9%83%a8%e8%8f%9c%e5%8d%95-container"><ul id="kratos-primary-menu" class="sf-menu">
+	<li><a href="./videojs.html">Angus播放器</a></li>
+	<li><a href="./convert-m3u-js.html">M3U转换工具</a></li>
+	<li><a href="./chinese-transverter.html">简繁体转换器</a></li>	
+</ul></nav>							</div>
+						</div>
+					</header>
+				</div><div class="kratos-start kratos-hero-2 kratos-post-header"><div class="kratos-overlay kratos-post" style="background:#222831"></div></div--><style>
+.txtarea{resize:none;height:420px;width:100%;font-size:14px;color:#333;line-height:160%}
+.tvinput{font-size:14px;color:#333;margin:5px 4px 5px 0px}
+.form-group{float:right;margin-top:5px;margin-left:21px;margin-bottom:10px}
+.fileinput-button{float:left;position:relative;display:inline-block;overflow:hidden;margin-top:0px;margin-bottom:10px}
+.fileinput-button input{position:absolute;right:0;top:0;opacity:0;-ms-filter:'alpha(opacity=0)';font-size:20px}
+/** .row {margin-right: -10px;margin-left: -10px;} **/
+.kratos-post-inner {padding-top: 2px;}
+@media screen and (max-width: 768px){
+    .kratos-post-inner {padding-top: 2px;}
+}
+</style>
+<div id="kratos-blog-post" style="background:#f5f5f5">
+    <div class="container">
+        <div class="row">
+            <section id="main" class='col-md-8'>
+                            <article>
+                    <div class="kratos-hentry kratos-post-inner clearfix">
+                        <div class="kratos-post-content">
+                            <div>
+                                <div>
+                                    <div class="form-group">
+                                        <label >文件编码：</label>
+                                        <select id="encoding" >
+                                                <option value="gbk" >GBK</option>
+                                                <option value="utf-8"  selected>UTF-8</option>
+                                                <option value="gbk">GB2312</option>
+                                                <option value="big5">BIG5</option>
+                                                <option value="korean">EUC-KR（韩文）</option>
+                                                <option value="euc-jp">EUC-JP（日文）</option>
+                                                <option value="utf-16be">UTF-16BE</option>
+                                                <option value="utf-16le">UTF-16LE</option>
+                                        </select>
+                                    </div>
+                                    <span class="btn btn-success fileinput-button">
+                                        <span>选择文件</span>
+                                        <input  type="file" id="inputBrow">
+                                    </span>
+                                </div>
+                                
+                                <textarea class="txtarea" id="tvsource-input"  name="zbytxt"></textarea>
+                                <br />
+                                <input type="submit" class="tvinput" id="TXTAJAX"  name="TXT" onClick="m3u2txt();" value="M3U转通用格式" />
+                                <input type="submit" class="tvinput" id="M3UAJAX"  name="M3U" onClick="tran2m3u();" value="TXT 转 M3U" />
+                                <input type="submit" class="tvinput" id="M3UPPAJAX"  name="M3UPP" onClick="tran2m3ugroup();" value="TXT转M3U分组" />
+                                <br />                            
+                                <h2 id="zbyjg">转换结果</h2>
+                                <textarea class="txtarea"  id="contents" name="contents" readonly="readonly"></textarea>
+								<p id="rtips"></p>
+                                <input type="button"  class="tvinput" onClick="copy();" value="复制文本" />
+                                <input type="button"  class="tvinput" onClick="downloadmitv();" value="下载" />                                                                       
+                            </div>                            
+                            <h2>使用说明</h2>
+<p>M3U是国际上应用广泛的播放列表，本网页专门用于直播源通用txt格式和M3U格式之间的转换。<br />
+本地转换不上传不保存任何数据<br />
+没有异常处理，对格式要求比较严格</p>
+<p>通用格式举例：</p>
+<pre>
+天津
+滨海新闻,http://60.30.52.41/live/bhtv1/playlist.m3u8
+滨海生活,http://60.30.52.41/live/bhtv2/playlist.m3u8
+西青新闻,http://221.238.209.44:81/hls/live1.m3u8
+江苏
+镇江新闻综合,http://live.zjmc.tv/1/sd/live.m3u8
+镇江-2,http://live.zjmc.tv/2/sd/live.m3u8
+镇江-3,http://live.zjmc.tv/3/sd/live.m3u8
+徐州
+徐州-1,http://stream1.huaihai.tv/xwzh/sd/live.m3u8
+徐州-2,http://stream1.huaihai.tv/jjsh/sd/live.m3u8
+徐州-3,http://stream1.huaihai.tv/wyys/sd/live.m3u8
+徐州-4,http://stream1.huaihai.tv/ggpd/sd/live.m3u8
+徐州-1,http://183.207.249.15/PLTV/3/224/3221225945/index.m3u8
+徐州-4,http://183.207.249.15/PLTV/3/224/3221225951/index.m3u8
+</pre>
+<h2>更新日志</h2>
+<ul>
+<li>20240111：初始版本；</li>
+</ul>
+                        </div>
+                        <hr />
+                        <header class="kratos-entry-header">
+                            <div class="kratos-post-meta text-center">
+                                <span>
+                                                                 
+                                                                                     
+                                   <span class="edit"></span>
+                                </span>
+                            </div>
+                        </header>
+                    </div>
+				    <hr />
+                        <div id="comments" class="comments-area">
+
+	        
+	<script type="text/javascript" language="javascript">
+/* <![CDATA[ */
+    function grin(tag) {
+        var myField;
+        tag = ' ' + tag + ' ';
+        if (document.getElementById('comment') && document.getElementById('comment').type == 'textarea') {
+            myField = document.getElementById('comment');
+        } else {
+            return false;
+        }
+        if (document.selection) {
+            myField.focus();
+            sel = document.selection.createRange();
+            sel.text = tag;
+            myField.focus();
+        }
+        else if (myField.selectionStart || myField.selectionStart == '0') {
+            var startPos = myField.selectionStart;
+            var endPos = myField.selectionEnd;
+            var cursorPos = endPos;
+            myField.value = myField.value.substring(0, startPos)
+                          + tag
+                          + myField.value.substring(endPos, myField.value.length);
+            cursorPos += tag.length;
+            myField.focus();
+            myField.selectionStart = cursorPos;
+            myField.selectionEnd = cursorPos;
+        }
+        else {
+            myField.value += tag;
+            myField.focus();
+        }
+    }
+/* ]]> */
+</script>  
+
+        <div class="commentshow">
+	        </div>        
+</div>
+
+	    
+<script>
+        jQuery('.comment-body').parent().hover(     
+            function(){
+                jQuery(this).find('.useragent').show();
+            },
+            function(){
+                jQuery(this).find('.useragent').hide();
+            });
+        jQuery('.comment-body').parent().click(     
+            function(){
+                jQuery(this).find('.useragent').show();
+            });
+</script>
+                </article>
+                        </section>   
+                        <aside id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm scrollspy">
+                <div id="sidebar">                
+                         
+                    <div class="kratos-hentry clearfix">
+                        <div class="kratos-post-content">
+                            <p align="center" style="margin-top:18px"><strong>M3U格式列表在线转换工具</strong></p>
+							<li><a href="./videojs.html">Angus播放器</a></li>
+	<li><a href="./convert-m3u-js.html">M3U转换工具</a></li>
+	<li><a href="./chinese-transverter.html">简繁体转换器</a></li>	
+                        </div>																	
+											
+                    </div> 
+                   		
+
+                </div>
+            </aside>
+            
+
+        </div>
+    </div>
+</div>                                            
+<script >
+  function tran2m3u(){
+    var source = document.getElementById("tvsource-input").value.trim();
+    var slists = source.split('\n');
+	var result = "#EXTM3U\r\n";
+	var groupname = "";
+	var countall = 0;
+	document.getElementById("rtips").innerHTML = "Tip：";
+     
+    for (var i = 0; i <= slists.length-1; i++)
+	{
+        var regex = /^(.*?),(http.*?)$/i;
+        var remat = slists[i].match(regex);
+		if( remat!== null)
+		{			
+			var tname = "#EXTINF:-1," + remat[1].trim() + "\r\n";
+			var turl = remat[2].trim() + "\r\n";
+			result += tname + turl;	
+			countall = countall + 1;
+		}		
+    }
+    document.getElementById("contents").value = result;
+	document.getElementById("rtips").innerHTML = "Tip：共转换 "+ countall + " 个源。";
+  }
+  
+  function tran2m3ugroup(){	  
+    var source = document.getElementById("tvsource-input").value.trim();
+    var slists = source.split('\n');
+	var result = "#EXTM3U\r\n";
+	var groupname = "未分组";
+	var countall = 0;
+	document.getElementById("rtips").innerHTML = "Tip：";
+     
+    for (var i = 0; i <= slists.length-1; i++)
+	{
+        var regex = /^(.*?),(http.*?)$/i;
+        var remat = slists[i].match(regex);
+		if( remat!== null)
+		{			
+			var tname = "#EXTINF:-1" + " " + 'group-title="'+groupname +'" '+ ","+ remat[1].trim() + "\r\n";
+			var turl = remat[2].trim() + "\r\n";
+			result += tname + turl;	
+			countall = countall+1;
+		}else{
+			if(slists[i].trim()!==""){
+				 groupname = slists[i].trim();
+			}	       
+		}		
+    }
+    document.getElementById("contents").value = result;
+	document.getElementById("rtips").innerHTML = "Tip：共转换 "+ countall + " 个源。";
+  }
+
+  function m3u2txt(){
+    var source = document.getElementById("tvsource-input").value;
+	document.getElementById("rtips").innerHTML = "Tip：";
+	if(source.search(/#EXTM3U/i)>=0)
+	{
+		var slists = source.replace(/[\r\n]+/g,'@');
+		var r = slists.match(/,([^,@]+)@([^@]+)/g)
+		if (r) {result = r.map(m=>m.replace(/,/g,'').replace(/@/g,',').replace(/(\n[\s\t]*\r*\n)/g, '\n').replace(/^[\n\r\n\t]*|[\n\r\n\t]*$/g, '')).join('\r\n');}
+		if (result) {document.getElementById("contents").value = result;}
+	}
+	else
+	{
+		document.getElementById("rtips").innerHTML = "Tip：";
+		document.getElementById("contents").value = "格式异常！请输入正确的M3U文本！";
+	}
+
+  }
+
+
+/******************************
+tvsource-input 为 textarea 的 ID
+inputBrow    上传按钮id
+*******************************/
+	// 支持文件拖放
+	function importTxt() {
+
+	}
+	// 支持文件拖放
+	function dragenter(e) {
+		e.stopPropagation();
+		e.preventDefault();
+	}
+
+	function dragover(e) {
+		e.stopPropagation();
+		e.preventDefault();
+	}
+
+	function drop(e) {
+		e.stopPropagation();
+		e.preventDefault();
+		var dt = e.dataTransfer;
+		var files = dt.files;
+		if (files.length) {
+			var file = files[0];
+			var reader = new FileReader();
+			reader.onload = function () {
+				document.getElementById("tvsource-input").value = this.result;
+			};
+			reader.readAsText(file, document.getElementById("encoding").value);
+			reader = null;
+		}
+	}
+	var dropbox = document.getElementById("tvsource-input");
+	dropbox.addEventListener("dragenter", dragenter, false);
+	dropbox.addEventListener("dragover", dragover, false);
+	dropbox.addEventListener("drop", drop, false);
+
+	(function () {
+		var input = document.querySelector('#inputBrow');
+		var span = document.querySelector('#tvsource-input');
+		input.addEventListener('change', function (e) {
+			handFile(e.target.files[0]);
+		});
+
+		function handFile(file) {
+			console.log('hand');
+			var reader = new FileReader();
+			reader.onload = function (e) {
+				span.value = e.target.result;
+			};
+			reader.readAsText(file, document.getElementById("encoding").value);
+			reader = null;
+		}
+	})();
+    /////====
+function copy(){
+
+    var content=document.getElementById("contents");
+    content.select();
+    document.execCommand("Copy"); 
+}
+
+/////====
+ function download(filename, text) {
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+}     
+
+function downloadmitv() {
+
+        var textmitv = document.getElementById('contents').value;      
+        if (textmitv.indexOf("playUrl") != -1 && textmitv.indexOf("genre") != -1)
+          {
+                 download("mitv.txt",textmitv);
+          }
+        else if(textmitv.indexOf("EXTM3U") != -1 && textmitv.indexOf("EXTINF") != -1)
+          {
+                download("tvlist.m3u",textmitv);
+          }
+         else if(textmitv.indexOf("DAUMPLAYLIST") != -1 && textmitv.indexOf("file") != -1)
+          {
+                download("tvlist.dpl",textmitv);
+          }
+          else
+          {
+                  download("tvlist.txt",textmitv);
+          }                                                                                                                                                                                                                                                                                                                                                                          
+}                                                                                        
+
+
+
+</script>
+
+				
+			</div>
+		</div>
+
+
+
+
+
+        </body>
+</html>
