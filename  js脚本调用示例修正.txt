@@ -1,0 +1,64 @@
+脚本函数调用示例：
+
+//只识别main
+function main(item) {
+
+//取地址
+const url = item.url;
+
+//取id
+var id = getQuery.call({ url: url, key: "id" });
+
+//get请求方式  headers为json格式
+var header = { 'Content-Type': 'application/x-www-form-urlencoded', 'User-Agent': 'okhttp/3.12.11' }
+var field = { url: url, headers: JSON.stringify(header) };
+var res = get.call(field);
+//var res = get.call({ url: url, headers: header });
+
+//post请求方式  headers为json格式
+var header = { 'Content-Type': 'application/x-www-form-urlencoded' }
+var res = post.call({ url: url, headers: header, body: "body" });
+
+//openssl AES解密加密,参数：key 秘钥，iv 偏移量，type 解密或加密类型，data 加密或解密数据
+var key = "ilyB29ZdruuQjC45JhBBR7o2Z8WJ26Vg";
+var iv = "JUMxvVMmszqUTeKn";
+var type ="AES-256-CBC"
+var enc = opensslEncrypt.call({ key: key, iv: iv, type: type, data: url });
+var dec = opensslDecrypt.call({ key: key, iv: iv, type: type, data: url });
+
+//转md5
+var md5 =md5.call(url)
+
+//是否为json对象
+var isJsonObject =isJsonObject.call(url)
+
+//是否为json组
+var isJsonArray =isJsonArray.call(url)
+
+//是否为b64编码
+var isBase64 =isBase64.call(url)
+
+//b64编码
+var encodeBase64 =encodeBase64.call(url)
+
+//b64解码
+var decodeBase64 =decodeBase64.call(url)
+
+//sha1加密
+var sha1 =sha1.call(url)
+
+//获取网络请求返回头部信息的值
+var headersValue =headersValue.call({ key: url })
+
+//返回m3u8 ts切片
+let content = "#EXTM3U\n#EXT-X-VERSION:3\n#EXT-X-TARGETDURATION:10\n#EXT-X-MEDIA-SEQUENCE:" + seq + "\n";
+    for (var i = 0; i < 3; i++) {
+        content += "#EXTINF:10,\n";
+        content += "http://123456789/" + id + i + ".ts\n";
+    }
+return JSON.stringify({ m3u8: content });
+
+//返回播放地址
+return JSON.stringify({ url: playurl });
+
+}
