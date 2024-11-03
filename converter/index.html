@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="./converter/favicon.png" type="image/x-icon" />
+    <title>简体-繁体 转换器</title>
+    <link rel="stylesheet" href="./converter/bootstrap.min.css" />
+    <link rel="stylesheet" href="./converter/flat-ui.min.css" />
+    <style>
+      body {
+        background-color: #ecf0f1;
+      }
+      .inputs {
+        height: calc(100vh - 220px);
+        margin: 60px auto 30px;
+      }
+      .btn-group button {
+      margin-right: 2px; 
+      }
+      .btn-group button:last-child {
+      margin-right: 0; 
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- 文本域输入框 -->
+      <textarea class="form-control inputs" placeholder="请输入简体中文 / 繁体中文"></textarea>
+      <!-- 按钮组 -->
+      <div class="btn-wrap text-center">
+        <div class="btn-group" role="group">
+          <button type="button" class="btn jianBtn btn-primary btn-sm" onclick="transformText('toFan')">简体 → 繁体</button>
+          <button type="button" class="btn fanBtn btn-success btn-sm" onclick="transformText('toJian')">繁体 → 简体</button>
+          <button type="button" class="btn copyBtn btn-info btn-sm" onclick="copy()">复制</button>
+          <button type="button" class="btn clearBtn btn-danger btn-sm" onclick="clearInputs()">清空</button>
+        </div>
+      </div>
+    </div>
+    <script src="./converter/bootstrap.min.js"></script>
+    <!-- 自己封装的简繁体转换函数 -->
+    <script src="./converter/transformer.js"></script>
+    <script>
+      let inputs = document.querySelector(".inputs");
+
+      // 简繁体转化
+      function transformText(flag) {
+        if (flag === "toFan") {
+          // 转成繁体
+          inputs.value = zhCN2zhTW(inputs.value);
+        } else if (flag === "toJian") {
+          // 转成简体
+          inputs.value = zhTW2zhCN(inputs.value);
+        }
+      }
+
+      // 复制到剪切板
+      function copy() {
+        if (inputs.value) {
+          inputs.select();
+          document.execCommand("copy");
+          inputs.blur();
+          alert("复制成功");
+        }
+      }
+
+      // 清空输入框
+      function clearInputs() {
+        inputs.value = "";
+      }
+    </script>
+  </body>
+</html>
