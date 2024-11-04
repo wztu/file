@@ -21,43 +21,38 @@
         const pasteButton = document.createElement('button');
         pasteButton.innerText = '粘贴内容';
         pasteButton.style.position = 'fixed';
+        pasteButton.style.zIndex = 9999;
         pasteButton.style.bottom = '20px';
-        pasteButton.style.right = '120px'; 
-        pasteButton.style.padding = '10px 20px';
-        pasteButton.style.border = 'none';
-        pasteButton.style.backgroundColor = '#00ff00';
+        pasteButton.style.right = '20px';
+        pasteButton.style.padding = '10px';
+        pasteButton.style.backgroundColor = '#4CAF50';
         pasteButton.style.color = 'white';
+        pasteButton.style.border = 'none';
         pasteButton.style.borderRadius = '5px';
         pasteButton.style.cursor = 'pointer';
-        pasteButton.addEventListener('click', () => {
-            navigator.clipboard.readText().then(text => {
-                const activeElement = document.activeElement;
-                if (activeElement && (activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA')) {
-                    activeElement.value = text;
-                } else {
-                    console.log('没有找到可粘贴内容的输入框或文本区域');
-                }
-            }).catch(err => {
-                console.error('粘贴失败:', err);
-            });
-        });
+
         document.body.appendChild(pasteButton);
+
+        pasteButton.addEventListener('click', async () => {
+            const activeElement = document.activeElement;
+            if (activeElement.tagName === 'TEXTAREA' || 
+                (activeElement.tagName === 'INPUT' && (activeElement.type === 'text' || activeElement.type === 'email' || activeElement.type === 'search'))) {
+                
+                try {
+                    const text = await navigator.clipboard.readText();
+                    const startPos = activeElement.selectionStart;
+                    const endPos = activeElement.selectionEnd;
+
+                    activeElement.value = activeElement.value.slice(0, startPos) + text + activeElement.value.slice(endPos);
+                    activeElement.setSelectionRange(startPos + text.length, startPos + text.length);
+                } catch (err) {
+                    console.error('无法读取剪切板内容：', err);
+                }
+            } else {
+                alert('请选中一个文本框来粘贴内容。');
+            }
+        });
     }
 
-    function handleInputClick(event) {
-        if (event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA') {
-            navigator.clipboard.readText().then(text => {
-                event.target.value = text; 
-            }).catch(err => {
-                console.error('粘贴失败:', err);
-            });
-        }
-    }
-
-    function checkSite() {
-        createButtons();
-        document.addEventListener('click', handleInputClick, true); 
-    }
-
-    checkSite();
+    window.addEventListener('load', createButtons);
 })();
