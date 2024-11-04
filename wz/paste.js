@@ -21,40 +21,36 @@
         const pasteButton = document.createElement('button');
         pasteButton.innerText = '粘贴内容';
         pasteButton.style.position = 'fixed';
-        pasteButton.style.zIndex = 9999;
         pasteButton.style.bottom = '20px';
-        pasteButton.style.right = '20px';
-        pasteButton.style.padding = '10px';
-        pasteButton.style.backgroundColor = '#4CAF50';
-        pasteButton.style.color = 'white';
+        pasteButton.style.right = '120px'; // Adjust the position to avoid overlapping with the copy button
+        pasteButton.style.padding = '10px 20px';
         pasteButton.style.border = 'none';
+        pasteButton.style.backgroundColor = '#00ff00';
+        pasteButton.style.color = 'white';
         pasteButton.style.borderRadius = '5px';
         pasteButton.style.cursor = 'pointer';
-
-        document.body.appendChild(pasteButton);
-
-        pasteButton.addEventListener('click', async () => {
-            const activeElement = document.activeElement;
-
-            if (activeElement.tagName === 'TEXTAREA' || 
-                (activeElement.tagName === 'INPUT' && (activeElement.type === 'text' || activeElement.type === 'email' || activeElement.type === 'search'))) {
-                
-                try {
-                    const text = await navigator.clipboard.readText();
-                    const startPos = activeElement.selectionStart;
-                    const endPos = activeElement.selectionEnd;
-
-                    activeElement.value = activeElement.value.slice(0, startPos) + text + activeElement.value.slice(endPos);
-                    activeElement.setSelectionRange(startPos + text.length, startPos + text.length);
-                    activeElement.focus(); // 确保文本框保持为焦点
-                } catch (err) {
-                    console.error('无法读取剪切板内容：', err);
+        pasteButton.addEventListener('click', () => {
+            navigator.clipboard.readText().then(text => {
+                const inputFields = document.querySelectorAll('input, textarea');
+                if (inputFields.length > 0) {
+                    inputFields[0].value = text; // Paste into the first input or textarea field found on the page
+                } else {
+                    console.log('没有找到可粘贴内容的输入框或文本区域');
                 }
-            } else {
-                alert('请选中一个文本框来粘贴内容。');
-            }
+            }).catch(err => {
+                console.error('粘贴失败:', err);
+            });
         });
+        document.body.appendChild(pasteButton);
     }
 
-    window.addEventListener('load', createButtons);
+    function checkSite() {
+        const currentHost = window.location.hostname;
+        const sites = ['example.com', 'another-site.com']; // Add your target sites here
+        if (sites.some(site => currentHost.includes(site))) {
+            createButtons();
+        }
+    }
+
+    window.addEventListener('load', checkSite);
 })();
