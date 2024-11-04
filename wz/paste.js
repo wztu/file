@@ -35,6 +35,7 @@
 
         pasteButton.addEventListener('click', async () => {
             const activeElement = document.activeElement;
+
             if (activeElement.tagName === 'TEXTAREA' || 
                 (activeElement.tagName === 'INPUT' && (activeElement.type === 'text' || activeElement.type === 'email' || activeElement.type === 'search'))) {
                 
@@ -45,6 +46,7 @@
 
                     activeElement.value = activeElement.value.slice(0, startPos) + text + activeElement.value.slice(endPos);
                     activeElement.setSelectionRange(startPos + text.length, startPos + text.length);
+                    activeElement.focus(); // 确保文本框保持为焦点
                 } catch (err) {
                     console.error('无法读取剪切板内容：', err);
                 }
