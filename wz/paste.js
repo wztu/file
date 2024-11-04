@@ -22,7 +22,7 @@
         pasteButton.innerText = '粘贴内容';
         pasteButton.style.position = 'fixed';
         pasteButton.style.bottom = '20px';
-        pasteButton.style.right = '120px'; // Adjust the position to avoid overlapping with the copy button
+        pasteButton.style.right = '120px'; 
         pasteButton.style.padding = '10px 20px';
         pasteButton.style.border = 'none';
         pasteButton.style.backgroundColor = '#00ff00';
@@ -33,7 +33,7 @@
             navigator.clipboard.readText().then(text => {
                 const activeElement = document.activeElement;
                 if (activeElement && (activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA')) {
-                    activeElement.value = text; // Paste into the currently focused input or textarea field
+                    activeElement.value = text;
                 } else {
                     console.log('没有找到可粘贴内容的输入框或文本区域');
                 }
@@ -47,7 +47,7 @@
     function handleInputClick(event) {
         if (event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA') {
             navigator.clipboard.readText().then(text => {
-                event.target.value = text; // Paste into the clicked input or textarea field
+                event.target.value = text; 
             }).catch(err => {
                 console.error('粘贴失败:', err);
             });
@@ -56,7 +56,7 @@
 
     function checkSite() {
         createButtons();
-        document.addEventListener('click', handleInputClick, true); // Use capture phase to ensure this runs before other click handlers
+        document.addEventListener('click', handleInputClick, true); 
     }
 
     checkSite();
