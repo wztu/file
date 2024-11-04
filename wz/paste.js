@@ -55,11 +55,8 @@
     }
 
     function checkSite() {
-        const currentHost = window.location.hostname;
-        if (sites.some(site => currentHost.includes(site))) {
-            createButtons();
-            document.addEventListener('click', handleInputClick, true); // Use capture phase to ensure this runs before other click handlers
-        }
+        createButtons();
+        document.addEventListener('click', handleInputClick, true); // Use capture phase to ensure this runs before other click handlers
     }
 
     checkSite();
