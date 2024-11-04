@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="full-screen" content="yes"><!--UC强制全屏-->
+  <meta name="browsermode" content="application"><!--UC应用模式-->
+  <meta name="x5-fullscreen" content="true"><!--QQ强制全屏-->
+  <meta name="x5-page-mode" content="app"><!--QQ应用模式-->
+  <title>在线url自定义数字批量生成 - wuzhij</title>
+  <meta name="description" content="一个简单的在线url自定义数字批量生成工具，纯前端处理，安全不偷源。">
+  <meta name="keywords" content="自定义链接数字,批量生成范围数字,wuzhij,无止境">
+  <style>
+    body {
+      text-align: center;
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+    h2 {
+      color: #333;
+      margin-bottom: 30px;
+    }
+    #inputContainer {
+      margin-top: 10px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: #666;
+    }
+    textarea, #numberList {
+      width: 800px;
+      height: 368px;
+      box-sizing: border-box;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 12px;
+    }
+    @media (max-width: 480px) {
+    textarea, #numberList {
+    width: 95%;
+    height: 50%;
+  }
+}
+    button {
+      margin-top: 10px;
+      padding: 10px 10px;
+      font-size: 14px;
+      cursor: pointer;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    #numberList {
+      margin-top: 5px;
+      background-color: #fff;
+      color: #333;
+    }
+    #copyright {
+      margin-top: 20px;
+      color: #666;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <h2>url自定义数字批量生成</h2>
+    <button onclick="add()" style="margin-bottom: -7px;">选择文件</button>
+     <h3 style="margin-bottom: -5px;">输入文本:</h3>
+  <div id="inputContainer">
+    <textarea id="urlInput" rows="10" cols="80" placeholder="输入URL 自定义 (开始数字-结束数字)"></textarea>
+  </div>
+  <button onclick="generateNumbers()">转换链接</button>
+  <button onclick="clearScreen()">清空屏幕</button>
+  <button onclick="copyContent()">复制结果</button>
+  <button onclick="saveAstxt()">保存TXT</button>
+  <h3 style="margin-bottom: 5px;">转换结果:</h3>
+  <textarea id="numberList" rows="10" cols="80" readonly></textarea>
+  </br>  </br>
+  <span>例如:  <a href="https://abc.com/ab(1-99).txt">https://abc.com/ab(1-99).txt</a></span>
+  </br>
+  <div id="copyright">
+    <p>&#169; 2024 wuzhij.com All Rights Reserved.</p>
+  </div>
+  
+        <script>
+   function generateNumbers() {
+      const inputText = document.getElementById('urlInput').value;
+      const lines = inputText.split('\n');
+      let outputText = '';
+
+      lines.forEach(line => {
+        if (line.includes('http://') || line.includes('https://')) {
+            // Determine the protocol (http or https)
+            const protocol = line.includes('http://') ? 'http://' : 'https://';
+            const parts = line.split(protocol);
+            const label = parts[0].trim();
+            const urlPart = parts[1];
+            const startEnd = urlPart.match(/\(([\d-]+)\)/)[1].split('-');
+            const start = parseInt(startEnd[0]);
+            const end = parseInt(startEnd[1]);
+            const hasLeadingZero = /^0/.test(startEnd[0]); // Check if the start number has leading zero
+            for (let i = start; i <= end; i++) {
+                let formattedNumber = i.toString();
+                if (hasLeadingZero && formattedNumber.length < startEnd[0].length) {
+                    formattedNumber = formattedNumber.padStart(startEnd[0].length, '0');
+                }
+                const formattedUrl = `${protocol}${urlPart.replace(/\([^)]*\)/, formattedNumber)}`;
+                const resultLine = `${label}${formattedUrl}`;
+                if (resultLine.trim()) { // Only add non-empty lines
+                    outputText += resultLine + '\n';
+                }
+            }
+        } else {
+            const trimmedLine = line.trim();
+            if (trimmedLine) { // Only add non-empty lines
+                outputText += trimmedLine + '\n';
+            }
+        }
+    });
+
+    document.getElementById('numberList').value = outputText.trim();
+}
+
+    function clearScreen() {
+      document.getElementById('urlInput').value = '';
+      document.getElementById('numberList').value = '';
+    }
+    function copyContent() {
+      const numberList = document.getElementById('numberList');
+      numberList.select();
+      document.execCommand('copy');
+      alert('内容已复制到剪贴板！');
+    }
+    function saveAstxt() {
+      const m3uContent = document.getElementById('numberList').value;
+      const blob = new Blob([m3uContent], { type: 'text/plain' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'list.txt';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+    function add() {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = '.txt';
+      input.onchange = function (event) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          document.getElementById('urlInput').value = e.target.result;
+        };
+        reader.readAsText(file);
+      };
+      input.click();
+    }
+        </script>
+</body>
+</html>
