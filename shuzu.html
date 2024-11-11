@@ -449,7 +449,7 @@ document.getElementById('generateButton').addEventListener('click', function() {
     // 将结果输出到文本区域
     var output = '';
     for (var key in results) {
-        output += "'" + key + "' => '" + results[key] + "',\n";
+        output += '"' + key + '" => \'' + results[key] + '\',\n';
     }
     document.getElementById('outputArea').value = output.trim(); //去掉最后一个换行符
 
