@@ -237,18 +237,22 @@ document.getElementById('generateButton').addEventListener('click', function() {
         "厦门卫视": "xmws",
         "延边卫视": "ybws",
         "兵团卫视": "btws",
+        "农林卫视": "nlws",
+        "三沙卫视": "ssws",
         "康巴卫视": "kbws",
         "安多卫视": "adws",
+        "黄河卫视": "hhews",
         "山东教育卫视": "sdews",
         "西藏卫视": "xzws",
         "新疆卫视": "xjws",
         "内蒙古卫视": "nmgws",
-        "大湾区卫视": "dbqws",
+        "大湾区卫视": "dwqws",
         "广东珠江": "gdzj",
         "卡酷少儿": "kakushao",
         "卡酷动画": "kakushao",
         "金鹰卡通": "jycartoon",
         "优漫卡通": "ymcartoon",
+        "嘉佳卡通": "jijkt",
         "哈哈炫动": "hahaxd",
         "北京纪实科教": "bjjishi",
         "湖南金鹰纪实": "hnjyjs",
@@ -361,7 +365,6 @@ document.getElementById('generateButton').addEventListener('click', function() {
         "卫生健康": "wsjk",       
         "风云足球": "fyzq",
         "魏县电视台": "weixiantv",
-        "河北少儿科教": "hbsekj",
         "河北经济": "hbjj",
         "河北都市": "hbds",
         "河北影视": "hbys",
@@ -374,7 +377,7 @@ document.getElementById('generateButton').addEventListener('click', function() {
         "湖南国际": "hungj",
         "湖南电影": "hundy",
         "湖南电视剧": "hundsj",
-        "湖南教育台": "hunjy",   
+        "湖南教育台": "hunjy"
         "CCTV-1综合": "cctv1",
         "CCTV-2财经": "cctv2",
         "CCTV-3综艺": "cctv3",
@@ -427,7 +430,7 @@ document.getElementById('generateButton').addEventListener('click', function() {
             }
 
             // 提取有效URL部分
-            var effectiveBaseURL = baseURL || url.replace(/^(https?:\/\/[^\/]+)\/.*/, '$1/');
+            var effectiveBaseURL = baseURL || url.replace(/^(https?:\/\/[^\/]+)\/.*/, "$1/");
             var urlPart = url.replace(effectiveBaseURL, '') || 'URL 无法提取';
 
             // 检查是否已有该频道名称
@@ -446,6 +449,14 @@ document.getElementById('generateButton').addEventListener('click', function() {
                 nameMappings[originalName] = name; // 记录名称映射关系
             }
 
+        document.getElementById('generateButton').addEventListener('click', function() {
+            var inputElement = document.getElementById('phpFile');
+            var fileName = inputElement.value;
+
+            if (!fileName.endsWith('.php')) {
+                inputElement.value = fileName + '.php';
+            }
+        });
             // 生成数组 URL 结果
             var finalURL = (newDomain || url.match(/^(https?:\/\/[^\/]+)/)[0]) + '/' + (phpFile || 'index.php') + '?id=' + nameMappings[originalName] + (linebz ? '' + linebz : '');
             arrayResults.push(originalName + ',' + finalURL);
