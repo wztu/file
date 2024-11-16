@@ -449,14 +449,6 @@ document.getElementById('generateButton').addEventListener('click', function() {
                 nameMappings[originalName] = name; // 记录名称映射关系
             }
 
-        document.getElementById('generateButton').addEventListener('click', function() {
-            var inputElement = document.getElementById('phpFile');
-            var fileName = inputElement.value;
-
-            if (!fileName.endsWith('.php')) {
-                inputElement.value = fileName + '.php';
-            }
-        });
             // 生成数组 URL 结果
             var finalURL = (newDomain || url.match(/^(https?:\/\/[^\/]+)/)[0]) + '/' + (phpFile || 'index.php') + '?id=' + nameMappings[originalName] + (linebz ? '' + linebz : '');
             arrayResults.push(originalName + ',' + finalURL);
